@@ -355,26 +355,23 @@ export default function PricingPage() {
 
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Do you offer refunds?</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">What's the difference between Pro and Elite?</h3>
                   <p className="text-gray-600">
-                    We offer a 30-day money-back guarantee for all paid plans. If you're not satisfied, contact us for a
-                    full refund.
+                    Pro is ideal for active job seekers applying frequently. Elite includes everything in Pro, plus access to all resume templates, unlimited AI fixes, and first-priority email support.
                   </p>
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">What happens to my data if I cancel?</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Can I pause my subscription?</h3>
                   <p className="text-gray-600">
-                    Your data remains accessible for 30 days after cancellation. You can export your resumes and data
-                    anytime during this period.
+                    Yes. Both Pro and Elite plans can be paused or canceled anytime. You won't be charged during paused periods.
                   </p>
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Do you offer student discounts?</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Will I be charged automatically every month?</h3>
                   <p className="text-gray-600">
-                    Yes! Students can get 50% off any paid plan with a valid student email address. Contact support for
-                    details.
+                    Yes. Subscriptions renew monthly, but you can cancel anytime before your next billing cycle to avoid future charges.
                   </p>
                 </div>
               </div>
