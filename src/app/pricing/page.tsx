@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { DropdownMenu } from "@/components/ui/dropdown-menu"
+
 import { Sparkles, Check, Star, Users, Crown, Zap } from "lucide-react"
 import { useState } from "react"
 import Link from "next/link"
@@ -89,13 +89,13 @@ export default function PricingPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <Link href="/homepage" className="flex items-center">
+                              <Link href="/" className="flex items-center">
                 <img src="/Logo Jobsuit name.png" alt="JOBSUIT" className="h-8 sm:h-9 lg:h-10 w-auto" />
               </Link>
             </div>
 
             <nav className="hidden md:flex items-center space-x-4 lg:space-x-8">
-              <Link href="/" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">
+              <Link href="/resume-builder" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">
                 AI Resume Builder
               </Link>
               <Link href="/cover-letter" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">
@@ -104,14 +104,9 @@ export default function PricingPage() {
               <Link href="/tailor-resume" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">
                 Tailor Your Resume
               </Link>
-              <DropdownMenu
-                trigger="More"
-                items={[
-                  { label: "Pricing", href: "/pricing" },
-                  { label: "Privacy Policy", href: "/privacy-policy" },
-                  { label: "Contact", href: "/contact" }
-                ]}
-              />
+              <a href="#" className="text-sm lg:text-base text-gray-700 hover:text-gray-900 font-medium">
+                Pricing
+              </a>
             </nav>
 
             <div className="flex items-center space-x-2 sm:space-x-3">

@@ -58,14 +58,12 @@ export default function CoverLetterGenerator() {
       <header className="border-b border-gray-100 bg-white sticky top-0 z-50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <Link href="/homepage" className="flex items-center">
-                <img src="/Logo Jobsuit name.png" alt="JOBSUIT" className="h-8 sm:h-9 lg:h-10 w-auto" />
-              </Link>
-            </div>
+            <Link href="/" className="flex items-center">
+              <img src="/Logo Jobsuit name.png" alt="JOBSUIT" className="h-8 sm:h-9 lg:h-10 w-auto" />
+            </Link>
 
             <nav className="hidden md:flex items-center space-x-4 lg:space-x-8">
-              <Link href="/" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">
+              <Link href="/resume-builder" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">
                 AI Resume Builder
               </Link>
               <a href="#" className="text-sm lg:text-base text-gray-700 hover:text-gray-900 font-medium">
@@ -74,14 +72,9 @@ export default function CoverLetterGenerator() {
               <Link href="/tailor-resume" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">
                 Tailor Your Resume
               </Link>
-              <DropdownMenu
-                trigger="More"
-                items={[
-                  { label: "Pricing", href: "/pricing" },
-                  { label: "Privacy Policy", href: "/privacy-policy" },
-                  { label: "Contact", href: "/contact" }
-                ]}
-              />
+              <Link href="/pricing" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">
+                Pricing
+              </Link>
             </nav>
 
             <div className="flex items-center space-x-2 sm:space-x-3">
@@ -90,12 +83,14 @@ export default function CoverLetterGenerator() {
                   Sign up
                 </Button>
               </Link>
-              <Button
-                variant="outline"
-                className="border-gray-300 text-gray-700 hover:bg-gray-50 bg-transparent px-3 sm:px-4 lg:px-6 py-2 text-sm lg:text-base"
-              >
-                Log in
-              </Button>
+              <Link href="https://editor.jobsuit.ai/register">
+                <Button
+                  variant="outline"
+                  className="border-gray-300 text-gray-700 hover:bg-gray-50 bg-transparent px-3 sm:px-4 lg:px-6 py-2 text-sm lg:text-base"
+                >
+                  Log in
+                </Button>
+              </Link>
               <MobileNav /> {/* Mobile navigation toggle */}
             </div>
           </div>
