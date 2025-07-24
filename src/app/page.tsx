@@ -6,6 +6,7 @@ import { Sparkles, FileText, CheckCircle, Play, BarChart3, Wand2, Plus, Minus, M
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { MobileNav } from "@/components/mobile-nav" // Import MobileNav
+import { UserNav } from "@/components/user-nav"
 
 export default function JobSuitHomepage() {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null)
@@ -71,13 +72,13 @@ export default function JobSuitHomepage() {
             </Link>
 
             <nav className="hidden md:flex items-center space-x-4 lg:space-x-8">
-              <Link href="#resume-builder" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">
+              <Link href="/resume-builder" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">
                 AI Resume Builder
               </Link>
-              <Link href="#cover-letter" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">
+              <Link href="/cover-letter" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">
                 AI Cover Letter Generator
               </Link>
-              <Link href="#tailor-resume" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">
+              <Link href="/tailor-resume" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">
                 Tailor Your Resume
               </Link>
               <Link href="/pricing" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">
@@ -86,19 +87,7 @@ export default function JobSuitHomepage() {
             </nav>
 
             <div className="flex items-center space-x-2 sm:space-x-3">
-              <Link href="https://editor.jobsuit.ai/register">
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-3 sm:px-4 lg:px-6 py-2 text-sm lg:text-base">
-                  Sign up
-                </Button>
-              </Link>
-              <Link href="https://editor.jobsuit.ai/register">
-                <Button
-                  variant="outline"
-                  className="border-gray-300 text-gray-700 hover:bg-gray-50 bg-transparent px-3 sm:px-4 lg:px-6 py-2 text-sm lg:text-base"
-                >
-                  Log in
-                </Button>
-              </Link>
+              <UserNav />
               <MobileNav /> {/* Mobile navigation toggle */}
             </div>
           </div>
