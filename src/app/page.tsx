@@ -2,8 +2,8 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Sparkles, FileText, CheckCircle, Play, BarChart3, Wand2, Plus, Minus, MessageCircle, Brain, Zap, Target, Eye, XCircle, Edit3, MessageSquare, Award, Clock, Users, Star, TrendingUp, Shield, ArrowRight, FileText as FileTextIcon, Upload, Download, Copy, AlertCircle } from "lucide-react"
-import { useState, useEffect } from "react"
+import { Sparkles, FileText, CheckCircle, Play, BarChart3, Wand2, Plus, Minus, MessageCircle, Brain, Zap, Target, Eye, XCircle, Edit3, MessageSquare, Award, Clock, Users, Star, TrendingUp, Shield, ArrowRight, FileText as FileTextIcon, Upload, Download, Copy, AlertCircle, Volume2, VolumeX } from "lucide-react"
+import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { MobileNav } from "@/components/mobile-nav" // Import MobileNav
 import { UserNav } from "@/components/user-nav"
@@ -11,6 +11,15 @@ import { UserNav } from "@/components/user-nav"
 export default function JobSuitHomepage() {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null)
   const [activeStrategy, setActiveStrategy] = useState("addition")
+  const [isMuted, setIsMuted] = useState(true)
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  const toggleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !isMuted
+      setIsMuted(!isMuted)
+    }
+  }
 
   const faqs = [
     {
@@ -72,13 +81,13 @@ export default function JobSuitHomepage() {
             </Link>
 
             <nav className="hidden md:flex items-center space-x-4 lg:space-x-8">
-              <Link href="/resume-builder" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">
+              <Link href="/#resume-builder" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">
                 AI Resume Builder
               </Link>
-              <Link href="/cover-letter" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">
+              <Link href="/#cover-letter" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">
                 AI Cover Letter Generator
               </Link>
-              <Link href="/tailor-resume" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">
+              <Link href="/#tailor-resume" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">
                 Tailor Your Resume
               </Link>
               <Link href="/pricing" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">
@@ -133,8 +142,12 @@ export default function JobSuitHomepage() {
             <div className="mt-16 sm:mt-20 lg:mt-24">
               <div className="relative w-full aspect-video bg-gray-900 rounded-lg overflow-hidden shadow-xl">
                 <video
+                  ref={videoRef}
                   className="w-full h-full object-cover"
-                  controls
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
                   preload="metadata"
                   poster="/hey-jobsuit.png"
                 >
@@ -147,11 +160,19 @@ export default function JobSuitHomepage() {
                   </p>
                 </video>
                 
-                {/* Custom Play Button Overlay (optional - you can remove this if you want default controls) */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 hover:opacity-100 transition-opacity duration-300">
-                  <div className="bg-black bg-opacity-50 rounded-full p-4">
-                    <Play className="w-8 h-8 text-white fill-current" />
-                  </div>
+                {/* Unmute Button */}
+                <div className="absolute bottom-4 right-4">
+                  <Button
+                    onClick={toggleMute}
+                    className="bg-black hover:bg-gray-800 text-white border-0 rounded-full p-3 transition-all duration-200"
+                    size="sm"
+                  >
+                    {isMuted ? (
+                      <VolumeX className="w-5 h-5" />
+                    ) : (
+                      <Volume2 className="w-5 h-5" />
+                    )}
+                  </Button>
                 </div>
               </div>
             </div>
