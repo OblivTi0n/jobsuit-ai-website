@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "JobSuit AI - AI Resume Builder & Cover Letter Generator | Beat ATS Systems",
-  description: "Create ATS-friendly resumes and cover letters with AI. JobSuit's conversational AI helps you build, analyze, and tailor your resume to any job with intelligent keyword suggestions. Free AI resume builder.",
+  title: "Jobsuit – Free AI Resume Builder | Tailor Your Resume with AI",
+  description: "Create, analyze, and tailor unlimited resumes for free with AI. Optimize for ATS, match keywords, and get real-time help from Jobsuit AI assistant to land interviews.",
   keywords: [
     "AI resume builder",
     "ATS friendly resume",
@@ -44,8 +44,8 @@ export const metadata: Metadata = {
     canonical: '/',
   },
   openGraph: {
-    title: "JobSuit AI - AI Resume Builder & Cover Letter Generator",
-    description: "Create ATS-friendly resumes and cover letters with AI. Beat the hiring system with intelligent keyword suggestions and conversational AI guidance.",
+    title: "Jobsuit – Free AI Resume Builder | Tailor Your Resume with AI",
+    description: "Create, analyze, and tailor unlimited resumes for free with AI. Optimize for ATS, match keywords, and get real-time help from Jobsuit AI assistant to land interviews.",
     url: 'https://jobsuit.ai',
     siteName: 'JobSuit AI',
     images: [
@@ -61,8 +61,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: "JobSuit AI - AI Resume Builder & Cover Letter Generator",
-    description: "Create ATS-friendly resumes and cover letters with AI. Beat the hiring system with intelligent keyword suggestions.",
+    title: "Jobsuit – Free AI Resume Builder | Tailor Your Resume with AI",
+    description: "Create, analyze, and tailor unlimited resumes for free with AI. Optimize for ATS, match keywords, and get real-time help from Jobsuit AI assistant to land interviews.",
     images: ['/Logo Jobsuit name.png'],
   },
   robots: {
