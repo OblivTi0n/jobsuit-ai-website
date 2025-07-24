@@ -89,8 +89,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/Logo Jobsuit name.png" />
+        <link rel="icon" href="/logo_4k (1).png" />
+        <link rel="apple-touch-icon" href="/logo_4k (1).png" />
         <meta name="theme-color" content="#2563eb" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>

@@ -295,7 +295,7 @@ export default function JobSuitHomepage() {
 
               {/* Right Visual - Create Resume Video */}
               <div className="relative">
-                <div className="bg-gray-900 rounded-xl shadow-2xl overflow-hidden" style={{ height: '547px' }}>
+                <div className="bg-gray-900 rounded-xl shadow-2xl overflow-hidden" style={{ height: 'min(547px, 60vh)' }}>
                   <video
                     className="w-full h-full object-cover"
                     autoPlay
@@ -337,7 +337,7 @@ export default function JobSuitHomepage() {
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
               {/* Left Visual - Analyze Resume Video */}
               <div className="relative order-2 lg:order-1">
-                <div className="bg-gray-900 rounded-xl shadow-2xl overflow-hidden" style={{ height: '547px' }}>
+                <div className="bg-gray-900 rounded-xl shadow-2xl overflow-hidden" style={{ height: 'min(547px, 60vh)' }}>
                   <video
                     className="w-full h-full object-cover"
                     autoPlay
@@ -465,7 +465,7 @@ export default function JobSuitHomepage() {
 
               {/* Right Visual - Tailor Resume Video */}
               <div className="relative">
-                <div className="bg-gray-900 rounded-xl shadow-2xl overflow-hidden" style={{ height: '547px' }}>
+                <div className="bg-gray-900 rounded-xl shadow-2xl overflow-hidden" style={{ height: 'min(547px, 60vh)' }}>
                   <video
                     className="w-full h-full object-cover"
                     autoPlay
