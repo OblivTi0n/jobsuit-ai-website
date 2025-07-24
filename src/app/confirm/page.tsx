@@ -5,8 +5,9 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Mail, CheckCircle, ArrowLeft, Home } from "lucide-react"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
+import { Suspense } from "react"
 
-export default function ConfirmPage() {
+function ConfirmContent() {
   const searchParams = useSearchParams()
   const message = searchParams.get('message') || 'Please check your email to confirm your account'
 
@@ -98,5 +99,17 @@ export default function ConfirmPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function ConfirmPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-green-50 flex items-center justify-center">
+        <div className="text-gray-600">Loading...</div>
+      </div>
+    }>
+      <ConfirmContent />
+    </Suspense>
   )
 } 
