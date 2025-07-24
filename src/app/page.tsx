@@ -2,13 +2,14 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Sparkles, FileText, CheckCircle, Play, BarChart3, Wand2, Plus, Minus } from "lucide-react"
-import { useState } from "react"
+import { Sparkles, FileText, CheckCircle, Play, BarChart3, Wand2, Plus, Minus, MessageCircle, Brain, Zap, Target, Eye, XCircle, Edit3, MessageSquare, Award, Clock, Users, Star, TrendingUp, Shield, ArrowRight, FileText as FileTextIcon, Upload, Download, Copy, AlertCircle } from "lucide-react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { MobileNav } from "@/components/mobile-nav" // Import MobileNav
 
 export default function JobSuitHomepage() {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null)
+  const [activeStrategy, setActiveStrategy] = useState("addition")
 
   const faqs = [
     {
@@ -53,6 +54,12 @@ export default function JobSuitHomepage() {
     },
   ]
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      document.documentElement.style.scrollBehavior = "smooth"
+    }
+  }, [])
+
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
@@ -64,13 +71,13 @@ export default function JobSuitHomepage() {
             </Link>
 
             <nav className="hidden md:flex items-center space-x-4 lg:space-x-8">
-              <Link href="/resume-builder" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">
+              <Link href="#resume-builder" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">
                 AI Resume Builder
               </Link>
-              <Link href="/cover-letter" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">
+              <Link href="#cover-letter" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">
                 AI Cover Letter Generator
               </Link>
-              <Link href="/tailor-resume" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">
+              <Link href="#tailor-resume" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">
                 Tailor Your Resume
               </Link>
               <Link href="/pricing" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">
@@ -487,6 +494,933 @@ export default function JobSuitHomepage() {
                     </span>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Chat Your Way to the Perfect Resume Section */}
+      <section id="resume-builder" className="py-12 sm:py-16 md:py-20 lg:py-32 bg-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
+            {/* Left Content */}
+            <div className="space-y-6 sm:space-y-8">
+              <div className="space-y-4 sm:space-y-6">
+                <Badge className="bg-blue-50 text-blue-600 border-blue-200 text-xs sm:text-sm font-medium">
+                  Interactive Resume Building
+                </Badge>
+                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight max-w-3xl">
+                  Chat your way to the perfect resume
+                </h2>
+                <p className="text-base sm:text-lg lg:text-xl text-gray-600 leading-relaxed max-w-lg">
+                  The first conversational AI resume builder. Chat back and forth with AI to craft your perfect resume -
+                  like having a personal career coach.
+                </p>
+              </div>
+              {/* Feature List */}
+              <div className="space-y-4 sm:space-y-6">
+                <div className="flex items-start space-x-3 sm:space-x-4">
+                  <div className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                    <MessageCircle className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-red-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">
+                      Interactive AI Conversations
+                    </h3>
+                    <p className="text-sm sm:text-base text-gray-600">
+                      Chat naturally with AI to build and refine your resume in real-time.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3 sm:space-x-4">
+                  <div className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                    <Brain className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-blue-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">Smart Resume Analysis</h3>
+                    <p className="text-sm sm:text-base text-gray-600">
+                      Get detailed feedback on every section with actionable improvements.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3 sm:space-x-4">
+                  <div className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                    <Zap className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-green-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-1">Live Resume Updates</h3>
+                    <p className="text-sm sm:text-base text-gray-600">
+                      Watch your resume improve instantly as you chat with the AI.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <Link href="#resume-builder">
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg rounded-full w-full sm:w-auto">
+                  Try interactive building
+                </Button>
+              </Link>
+            </div>
+            {/* Right Visual - Larger Interface Screenshot */}
+            <div className="relative mt-8 lg:mt-0">
+              <div className="relative z-10">
+                <img
+                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-SDFSMfb3BkFiEwxKTfySWFB0uaHEYD.png"
+                  alt="JobSuit AI Resume Builder Interface"
+                  className="w-full h-auto rounded-lg shadow-2xl border border-gray-200 max-w-none lg:max-w-2xl xl:max-w-3xl"
+                />
+                {/* Floating Enhancement Cards - Responsive */}
+                <Card className="absolute -top-2 -right-2 sm:-top-4 sm:-right-4 bg-green-500 text-white p-2 sm:p-3 shadow-lg transform -rotate-3 z-20">
+                  <div className="text-center">
+                    <MessageCircle className="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 mx-auto mb-1" />
+                    <div className="text-xs font-medium">Live Chat</div>
+                  </div>
+                </Card>
+                <Card className="absolute top-1/2 -left-4 sm:-left-6 lg:-left-8 bg-white p-2 sm:p-3 shadow-lg border-2 border-blue-200 z-20">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span className="text-xs font-medium">AI Analyzing...</span>
+                  </div>
+                </Card>
+                <Card className="absolute bottom-4 sm:bottom-6 lg:bottom-8 -right-4 sm:-right-6 lg:-right-8 bg-white p-2 sm:p-3 shadow-lg border-2 border-purple-200 z-20">
+                  <div className="text-center">
+                    <div className="text-sm sm:text-base lg:text-lg font-bold text-purple-600">3-Panel</div>
+                    <div className="text-xs text-gray-600">Interface</div>
+                  </div>
+                </Card>
+              </div>
+              {/* Background Gradient */}
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-purple-100 rounded-3xl transform rotate-6 -z-10"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Why Choose Conversational AI Section */}
+      <section className="py-12 sm:py-16 md:py-20 lg:py-32 bg-gray-50">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto text-center">
+            <Badge className="bg-blue-50 text-blue-600 border-blue-200 text-xs sm:text-sm font-medium mb-4 sm:mb-6">
+              Conversational AI
+            </Badge>
+
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 sm:mb-8">
+              Your personal AI career coach
+            </h2>
+
+            <p className="text-base sm:text-lg lg:text-xl text-gray-600 mb-8 sm:mb-12 max-w-2xl mx-auto">
+              Unlike other AI resume builders that just give you suggestions, our AI has real conversations with you to
+              understand your unique career story.
+            </p>
+
+            <div className="grid md:grid-cols-3 gap-6 sm:gap-8 mb-8 sm:mb-12">
+              <div className="text-center space-y-3 sm:space-y-4">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
+                  <MessageCircle className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-blue-600" />
+                </div>
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-900">Natural Conversations</h3>
+                <p className="text-sm sm:text-base text-gray-600">
+                  Chat naturally with AI like you would with a career counselor. Ask questions, get clarifications.
+                </p>
+              </div>
+
+              <div className="text-center space-y-3 sm:space-y-4">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
+                  <Zap className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-green-600" />
+                </div>
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-900">Real-time Collaboration</h3>
+                <p className="text-sm sm:text-base text-gray-600">
+                  Watch your resume update instantly as you chat. See changes happen in real-time.
+                </p>
+              </div>
+
+              <div className="text-center space-y-3 sm:space-y-4">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto">
+                  <Brain className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-purple-600" />
+                </div>
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-900">Detailed Analysis</h3>
+                <p className="text-sm sm:text-base text-gray-600">
+                  Get comprehensive feedback on every section with actionable improvement suggestions.
+                </p>
+              </div>
+            </div>
+
+            <Link href="https://editor.jobsuit.ai/register">
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg rounded-full w-full sm:w-auto">
+                Start your conversation
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* See Every Keyword Suggestion Section */}
+      <section id="tailor-resume" className="py-12 sm:py-16 lg:py-24 xl:py-32 bg-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12 lg:mb-16">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-gray-900 mb-4 lg:mb-6">
+                See Every Keyword Suggestion
+                <br />
+                <span className="text-blue-600">Accept or Reject in One Click</span>
+              </h2>
+              <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
+                No black box AI. Every suggestion is transparent, explained, and completely under your control.
+              </p>
+            </div>
+
+            {/* Actual Interface Demo */}
+            <div className="bg-gray-50 rounded-xl lg:rounded-2xl p-4 sm:p-6 lg:p-8 xl:p-12 shadow-xl">
+              {/* Header with Progress */}
+              <div className="mb-6 lg:mb-8">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-3">
+                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center">
+                    <Target className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 mr-2 sm:mr-3" />
+                    Job Matching
+                  </h3>
+                  <Button className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-3 sm:px-4 py-2 rounded-lg text-sm sm:text-base">
+                    Tailor to another job
+                  </Button>
+                </div>
+
+                <div className="mb-4">
+                  <div className="flex items-center justify-between text-sm text-gray-600 mb-2">
+                    <span>Keywords Integrated:</span>
+                    <span>(6/13)</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="bg-blue-500 h-2 rounded-full" style={{ width: "46%" }}></div>
+                  </div>
+                </div>
+
+                <div className="flex space-x-4 sm:space-x-6 border-b border-gray-200 overflow-x-auto">
+                  <button className="pb-2 border-b-2 border-blue-500 text-blue-600 font-medium whitespace-nowrap text-sm sm:text-base">
+                    Active 7
+                  </button>
+                  <button className="pb-2 text-gray-500 whitespace-nowrap text-sm sm:text-base">
+                    Already Matched 6
+                  </button>
+                  <button className="pb-2 text-gray-500 whitespace-nowrap text-sm sm:text-base">Rejected 0</button>
+                </div>
+              </div>
+
+              {/* Keyword Suggestions */}
+              <div className="space-y-4 sm:space-y-6">
+                {/* Contextual Match Example */}
+                <div className="bg-white rounded-lg lg:rounded-xl border-l-4 border-orange-400 p-4 sm:p-6 shadow-sm">
+                  <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-4 gap-3">
+                    <div className="flex-1">
+                      <div className="text-xs sm:text-sm text-gray-500 uppercase tracking-wide mb-1">
+                        KEYWORDS PENDING CONFIRMATION
+                      </div>
+                      <div className="flex items-center space-x-2 mb-1">
+                        <div className="w-3 h-3 bg-orange-400 rounded-full"></div>
+                        <span className="font-semibold text-gray-900 text-sm sm:text-base">Product Management</span>
+                      </div>
+                      <div className="text-xs sm:text-sm text-gray-600">PLACEMENT: Product Manager – Google</div>
+                    </div>
+                    <Badge className="bg-orange-100 text-orange-700 border-orange-200 flex items-center self-start lg:self-center text-xs sm:text-sm">
+                      <MessageSquare className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                      CONTEXTUAL MATCH
+                    </Badge>
+                  </div>
+
+                  <div className="bg-orange-50 rounded-lg p-3 sm:p-4 mb-4">
+                    <div className="font-medium text-gray-900 mb-2 text-sm sm:text-base">Clarifying Question:</div>
+                    <p className="text-gray-700 mb-4 text-sm sm:text-base">
+                      Did you manage product roadmaps, coordinate with engineering teams, or make product decisions in
+                      your previous roles? If not, do you have any other experience with product management?
+                    </p>
+
+                    <div className="mb-4">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Your Answer:</label>
+                      <textarea
+                        className="w-full p-3 border border-gray-300 rounded-lg resize-none text-sm sm:text-base"
+                        rows={3}
+                        placeholder="Please provide details about your experience with these keywords..."
+                      />
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                      <Button
+                        variant="outline"
+                        className="border-gray-300 text-gray-600 bg-transparent text-sm sm:text-base"
+                      >
+                        <XCircle className="w-4 h-4 mr-1" />
+                        Reject
+                      </Button>
+                      <div className="flex-1"></div>
+                      <Button className="bg-blue-600 hover:bg-blue-700 text-white text-sm sm:text-base">Yes</Button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Modification Example */}
+                <div className="bg-white rounded-lg lg:rounded-xl border-l-4 border-blue-400 p-4 sm:p-6 shadow-sm">
+                  <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-4 gap-3">
+                    <div className="flex-1">
+                      <div className="text-xs sm:text-sm text-gray-500 uppercase tracking-wide mb-1">
+                        KEYWORDS MODIFIED
+                      </div>
+                      <div className="flex items-center space-x-2 mb-1">
+                        <div className="w-3 h-3 bg-blue-400 rounded-full"></div>
+                        <span className="font-semibold text-gray-900 text-sm sm:text-base">Machine Learning</span>
+                      </div>
+                      <div className="text-xs sm:text-sm text-gray-600">PLACEMENT: Software Engineer – Amazon</div>
+                    </div>
+                    <Badge className="bg-blue-100 text-blue-700 border-blue-200 flex items-center self-start lg:self-center text-xs sm:text-sm">
+                      <Edit3 className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                      MODIFICATION
+                    </Badge>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div>
+                      <div className="font-medium text-gray-900 mb-2 text-sm sm:text-base">Original Bullet:</div>
+                      <div className="bg-gray-50 p-3 rounded-lg text-gray-700 text-sm sm:text-base">
+                        Developed predictive algorithms to analyze user behavior patterns and improve recommendation
+                        systems for e-commerce platform.
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="font-medium text-gray-900 mb-2 flex items-center text-blue-600 text-sm sm:text-base">
+                        <CheckCircle className="w-4 h-4 mr-1" />
+                        Modified Bullet
+                      </div>
+                      <div className="bg-blue-50 p-3 rounded-lg text-gray-700 border border-blue-200 text-sm sm:text-base">
+                        Developed machine learning algorithms to analyze user behavior patterns and improve
+                        recommendation systems for e-commerce platform.
+                      </div>
+                    </div>
+
+                    <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
+                      <div className="font-medium text-gray-900 mb-2 text-sm sm:text-base">REASONING:</div>
+                      <p className="text-gray-700 text-sm">
+                        The original bullet mentions 'predictive algorithms,' which directly relates to machine
+                        learning. Modifying to include 'machine learning algorithms' makes this connection explicit and
+                        aligns perfectly with the job requirements.
+                      </p>
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                      <Button
+                        variant="outline"
+                        className="border-gray-300 text-gray-600 bg-transparent text-sm sm:text-base"
+                      >
+                        <XCircle className="w-4 h-4 mr-1" />
+                        Reject
+                      </Button>
+                      <div className="flex-1"></div>
+                      <div className="flex flex-col sm:flex-row gap-2">
+                        <Button className="bg-blue-600 hover:bg-blue-700 text-white text-sm sm:text-base">
+                          Accept Revision
+                        </Button>
+                        <Button className="bg-yellow-500 hover:bg-yellow-600 text-white text-sm sm:text-base">
+                          Edit
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Not Applicable Example */}
+                <div className="bg-white rounded-lg lg:rounded-xl border-l-4 border-red-400 p-4 sm:p-6 shadow-sm">
+                  <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-4 gap-3">
+                    <div className="flex-1">
+                      <div className="text-xs sm:text-sm text-gray-500 uppercase tracking-wide mb-1">
+                        KEYWORDS NOT APPLICABLE
+                      </div>
+                      <div className="flex items-center space-x-2 mb-1">
+                        <div className="w-3 h-3 bg-red-400 rounded-full"></div>
+                        <span className="font-semibold text-gray-900 text-sm sm:text-base">
+                          Kubernetes, Docker, DevOps
+                        </span>
+                      </div>
+                      <div className="text-xs sm:text-sm text-gray-600">
+                        Integration Strategy: <span className="text-red-600">✕ Not Applicable</span>
+                      </div>
+                      <div className="text-xs sm:text-sm text-gray-600">Placement: N/A</div>
+                    </div>
+                    <Badge className="bg-red-100 text-red-700 border-red-200 flex items-center self-start lg:self-center text-xs sm:text-sm">
+                      <XCircle className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                      NOT APPLICABLE
+                    </Badge>
+                  </div>
+
+                  <div className="bg-red-50 p-3 sm:p-4 rounded-lg mb-4">
+                    <div className="font-medium text-gray-900 mb-2 text-sm sm:text-base">Reasoning:</div>
+                    <p className="text-gray-700 text-sm">
+                      These DevOps technologies are not mentioned or implied anywhere in the resume, including work
+                      experience, skills, or education sections.
+                    </p>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                    <Button
+                      variant="outline"
+                      className="border-gray-300 text-gray-600 bg-transparent text-sm sm:text-base"
+                    >
+                      <XCircle className="w-4 h-4 mr-1" />
+                      Reject
+                    </Button>
+                    <div className="flex-1"></div>
+                    <Button className="bg-blue-600 hover:bg-blue-700 text-white text-sm sm:text-base">
+                      <Wand2 className="w-4 h-4 mr-1" />
+                      Fix with AI
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Addition/Modification Combined Example */}
+                <div className="bg-white rounded-lg lg:rounded-xl border-l-4 border-purple-400 p-4 sm:p-6 shadow-sm">
+                  <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-4 gap-3">
+                    <div className="flex-1">
+                      <div className="text-xs sm:text-sm text-gray-500 uppercase tracking-wide mb-1">
+                        ADDITION/MODIFICATION
+                      </div>
+                      <div className="flex items-center space-x-2 mb-1">
+                        <div className="w-3 h-3 bg-purple-400 rounded-full"></div>
+                        <span className="font-semibold text-gray-900 text-sm sm:text-base">Data Analysis, SQL</span>
+                      </div>
+                      <div className="text-xs sm:text-sm text-gray-600">PLACEMENT: Data Scientist – Microsoft</div>
+                    </div>
+                    <Badge className="bg-purple-100 text-purple-700 border-purple-200 flex items-center self-start lg:self-center text-xs sm:text-sm">
+                      <Plus className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                      ADDITION/MODIFICATION
+                    </Badge>
+                  </div>
+
+                  <div className="space-y-4">
+                    {/* Modification Section */}
+                    <div className="border border-blue-200 rounded-lg p-3 sm:p-4 bg-blue-50">
+                      <div className="flex items-center mb-3">
+                        <Edit3 className="w-4 h-4 text-blue-600 mr-2" />
+                        <span className="font-medium text-blue-800 text-sm sm:text-base">Modification</span>
+                      </div>
+
+                      <div className="space-y-3">
+                        <div>
+                          <div className="text-sm font-medium text-gray-700 mb-1">Original Bullet:</div>
+                          <div className="bg-white p-3 rounded text-sm text-gray-700">
+                            Analyzed customer feedback and market trends to identify opportunities for product
+                            improvements and feature enhancements.
+                          </div>
+                        </div>
+
+                        <div>
+                          <div className="text-sm font-medium text-blue-700 mb-1 flex items-center">
+                            <CheckCircle className="w-4 h-4 mr-1" />
+                            Modified Bullet
+                          </div>
+                          <div className="bg-blue-100 p-3 rounded text-sm text-gray-700 border border-blue-300">
+                            Performed comprehensive data analysis using SQL to analyze customer feedback and market
+                            trends, identifying opportunities for product improvements and feature enhancements.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Addition Section */}
+                    <div className="border border-green-200 rounded-lg p-3 sm:p-4 bg-green-50">
+                      <div className="flex items-center mb-3">
+                        <Plus className="w-4 h-4 text-green-600 mr-2" />
+                        <span className="font-medium text-green-800 text-sm sm:text-base">Addition</span>
+                      </div>
+
+                      <div>
+                        <div className="text-sm font-medium text-green-700 mb-1">+ New Bullet Point</div>
+                        <div className="bg-green-100 p-3 rounded text-sm text-gray-700 border border-green-300">
+                          Leveraged advanced SQL queries and data analysis techniques to extract insights from large
+                          datasets, supporting data-driven decision making across multiple business units.
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                      <Button
+                        variant="outline"
+                        className="border-gray-300 text-gray-600 bg-transparent text-sm sm:text-base"
+                      >
+                        <XCircle className="w-4 h-4 mr-1" />
+                        Reject
+                      </Button>
+                      <div className="flex-1"></div>
+                      <div className="flex flex-col sm:flex-row gap-2">
+                        <Button className="bg-purple-600 hover:bg-purple-700 text-white text-sm sm:text-base">
+                          Accept Modification
+                        </Button>
+                        <Button className="bg-green-600 hover:bg-green-700 text-white text-sm sm:text-base">
+                          Accept Addition
+                        </Button>
+                        <Button className="bg-yellow-500 hover:bg-yellow-600 text-white text-sm sm:text-base">
+                          Edit
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 5 Intelligent Integration Strategies Section */}
+      <section className="py-12 sm:py-16 lg:py-24 xl:py-32 bg-gray-50">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-12 sm:mb-16">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+                5 Intelligent Integration Strategies
+              </h2>
+              <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto">
+                Our AI chooses the best approach for each keyword based on your existing experience and the job
+                requirements.
+              </p>
+            </div>
+
+            {/* Strategy Tabs */}
+            <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-12">
+              <button
+                onClick={() => setActiveStrategy("addition")}
+                className={`flex items-center px-4 sm:px-6 py-2 sm:py-3 rounded-full text-sm sm:text-base font-medium transition-all ${
+                  activeStrategy === "addition"
+                    ? "bg-green-100 text-green-700 border-2 border-green-200"
+                    : "bg-white text-gray-600 border-2 border-gray-200 hover:border-gray-300"
+                }`}
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Addition
+              </button>
+              <button
+                onClick={() => setActiveStrategy("modification")}
+                className={`flex items-center px-4 sm:px-6 py-2 sm:py-3 rounded-full text-sm sm:text-base font-medium transition-all ${
+                  activeStrategy === "modification"
+                    ? "bg-blue-100 text-blue-700 border-2 border-blue-200"
+                    : "bg-white text-gray-600 border-2 border-gray-200 hover:border-gray-300"
+                }`}
+              >
+                <Edit3 className="w-4 h-4 mr-2" />
+                Modification
+              </button>
+              <button
+                onClick={() => setActiveStrategy("contextual")}
+                className={`flex items-center px-4 sm:px-6 py-2 sm:py-3 rounded-full text-sm sm:text-base font-medium transition-all ${
+                  activeStrategy === "contextual"
+                    ? "bg-orange-100 text-orange-700 border-2 border-orange-200"
+                    : "bg-white text-gray-600 border-2 border-gray-200 hover:border-gray-300"
+                }`}
+              >
+                <MessageSquare className="w-4 h-4 mr-2" />
+                Contextual Match
+              </button>
+              <button
+                onClick={() => setActiveStrategy("skills")}
+                className={`flex items-center px-4 sm:px-6 py-2 sm:py-3 rounded-full text-sm sm:text-base font-medium transition-all ${
+                  activeStrategy === "skills"
+                    ? "bg-purple-100 text-purple-700 border-2 border-purple-200"
+                    : "bg-white text-gray-600 border-2 border-gray-200 hover:border-gray-300"
+                }`}
+              >
+                <Award className="w-4 h-4 mr-2" />
+                Skills Reinforcement
+              </button>
+              <button
+                onClick={() => setActiveStrategy("notapplicable")}
+                className={`flex items-center px-4 sm:px-6 py-2 sm:py-3 rounded-full text-sm sm:text-base font-medium transition-all ${
+                  activeStrategy === "notapplicable"
+                    ? "bg-red-100 text-red-700 border-2 border-red-200"
+                    : "bg-white text-gray-600 border-2 border-gray-200 hover:border-gray-300"
+                }`}
+              >
+                <XCircle className="w-4 h-4 mr-2" />
+                Not Applicable
+              </button>
+            </div>
+
+            {/* Strategy Content Card */}
+            <div className="max-w-4xl mx-auto">
+              <Card className="bg-white border border-gray-200 shadow-lg p-8 sm:p-12">
+                {activeStrategy === "addition" && (
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <Plus className="w-8 h-8 text-green-600" />
+                    </div>
+                    <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">Addition Strategy</h3>
+                    <p className="text-lg text-gray-600 mb-8">
+                      Add new bullet points that naturally incorporate missing keywords
+                    </p>
+                    <div className="text-left bg-gray-50 rounded-lg p-6">
+                      <h4 className="font-semibold text-gray-900 mb-3">Example:</h4>
+                      <p className="text-gray-700 italic">
+                        Added: 'Conducted product demos during client presentations, showcasing key features to
+                        prospective customers'
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {activeStrategy === "modification" && (
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <Edit3 className="w-8 h-8 text-blue-600" />
+                    </div>
+                    <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">Modification Strategy</h3>
+                    <p className="text-lg text-gray-600 mb-8">
+                      Enhance existing bullet points by weaving in relevant keywords
+                    </p>
+                    <div className="text-left bg-gray-50 rounded-lg p-6">
+                      <h4 className="font-semibold text-gray-900 mb-3">Example:</h4>
+                      <p className="text-gray-700 italic">
+                        Modified: 'Led sales presentations' → 'Led sales presentations and product demos, contributing
+                        to 15% increase in client engagement'
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {activeStrategy === "contextual" && (
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <MessageSquare className="w-8 h-8 text-orange-600" />
+                    </div>
+                    <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">Contextual Match Strategy</h3>
+                    <p className="text-lg text-gray-600 mb-8">
+                      AI asks clarifying questions to understand your experience before suggesting changes
+                    </p>
+                    <div className="text-left bg-gray-50 rounded-lg p-6">
+                      <h4 className="font-semibold text-gray-900 mb-3">Example:</h4>
+                      <p className="text-gray-700 italic">
+                        Question: 'Did you make outbound calls as part of your sponsorship role? This would help us add
+                        the 'Cold Calling' keyword naturally.'
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {activeStrategy === "skills" && (
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <Award className="w-8 h-8 text-purple-600" />
+                    </div>
+                    <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">Skills Reinforcement Strategy</h3>
+                    <p className="text-lg text-gray-600 mb-8">
+                      Strengthen existing skills mentions and add related competencies
+                    </p>
+                    <div className="text-left bg-gray-50 rounded-lg p-6">
+                      <h4 className="font-semibold text-gray-900 mb-3">Example:</h4>
+                      <p className="text-gray-700 italic">
+                        Enhanced: 'Excel proficiency' → 'Advanced Excel proficiency including pivot tables, VLOOKUP, and
+                        data visualization'
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {activeStrategy === "notapplicable" && (
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <XCircle className="w-8 h-8 text-red-600" />
+                    </div>
+                    <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">Not Applicable Strategy</h3>
+                    <p className="text-lg text-gray-600 mb-8">
+                      AI identifies keywords you don't have experience with, but you can chat with AI to add them if you
+                      do
+                    </p>
+                    <div className="text-left bg-gray-50 rounded-lg p-6">
+                      <h4 className="font-semibold text-gray-900 mb-3">Example:</h4>
+                      <p className="text-gray-700 italic">
+                        AI: 'No Salesforce experience found.' You: 'Actually, I used Salesforce in my internship.' AI:
+                        'Great! Let me help you add that naturally.'
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </Card>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Take Your Cover Letters to the Next Level with AI Section */}
+      <section id="cover-letter" className="py-12 sm:py-16 lg:py-20 bg-blue-600">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+              {/* Left Content */}
+              <div className="space-y-8">
+                <div className="space-y-6">
+                  <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
+                    Take Your Cover Letters to the Next Level with AI
+                  </h2>
+
+                  <p className="text-lg text-blue-100 leading-relaxed">
+                    Create cover letters that don't just get interviews. This intelligent cover letters speak directly
+                    to the job you want and makes you the best choice for the role.
+                  </p>
+
+                  <div className="space-y-4">
+                    <div className="flex items-start space-x-3">
+                      <CheckCircle className="w-5 h-5 text-blue-200 mt-1 flex-shrink-0" />
+                      <p className="text-blue-100">
+                        <strong className="text-white">Personalized content:</strong> Our AI analyzes your experience
+                        and the job requirements to create tailored content that highlights your best qualifications.
+                      </p>
+                    </div>
+                    <div className="flex items-start space-x-3">
+                      <CheckCircle className="w-5 h-5 text-blue-200 mt-1 flex-shrink-0" />
+                      <p className="text-blue-100">
+                        <strong className="text-white">No boilerplate:</strong> No basic pages, just a personalized
+                        cover for why you belong in this role.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <Link href="https://editor.jobsuit.ai/register">
+                  <Button className="bg-white text-blue-600 hover:bg-blue-50 font-semibold px-8 py-4 text-lg rounded-full border border-blue-600">
+                    Write a cover letter with AI
+                  </Button>
+                </Link>
+              </div>
+
+              {/* Right Visual */}
+              <div className="relative">
+                <Card className="bg-white shadow-2xl border-0 p-8 rounded-xl">
+                  <div className="space-y-4">
+                    <div className="flex items-center space-x-3 mb-6">
+                      <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                        <FileText className="w-4 h-4 text-blue-600" />
+                      </div>
+                      <span className="font-semibold text-gray-900">Cover Letter Preview</span>
+                    </div>
+
+                    <div className="space-y-3 text-sm text-gray-700">
+                      <p className="font-medium">Dear Hiring Manager,</p>
+                      <p>
+                        I am writing to express my strong interest in the Senior Software Engineer position at TechCorp.
+                        With my 5+ years of experience in full-stack development and proven track record of delivering
+                        scalable solutions...
+                      </p>
+                      <p>
+                        In my previous role at StartupXYZ, I successfully led a team of 4 developers to build a
+                        microservices architecture that improved system performance by 40%...
+                      </p>
+                      <p>
+                        I am particularly excited about TechCorp's commitment to innovation and would love to contribute
+                        to your mission of revolutionizing the industry...
+                      </p>
+                      <p className="font-medium">
+                        Sincerely,
+                        <br />
+                        John Smith
+                      </p>
+                    </div>
+
+                    <div className="flex space-x-2 pt-4 border-t">
+                      <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white">
+                        <Download className="w-4 h-4 mr-1" />
+                        Download
+                      </Button>
+                      <Button size="sm" variant="outline">
+                        <Copy className="w-4 h-4 mr-1" />
+                        Copy
+                      </Button>
+                      <Button size="sm" variant="outline">
+                        <Edit3 className="w-4 h-4 mr-1" />
+                        Edit
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Floating badges */}
+                <div className="absolute -top-4 -right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                  AI Generated
+                </div>
+                <div className="absolute -bottom-4 -left-4 bg-yellow-400 text-black px-3 py-1 rounded-full text-sm font-medium">
+                  ATS Friendly
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works – Generate Professional Cover Letters Section */}
+      <section className="py-12 sm:py-16 lg:py-20 bg-white">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">How it works</h2>     
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                Generate professional cover letters in minutes with our AI-powered tool
+              </p>
+            </div>
+
+            <div className="space-y-12">
+              {/* Step 1 */}
+              <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+                <div className="space-y-6">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold text-lg">
+                      1
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900">Name Your Cover Letter</h3>
+                  </div>
+                  <p className="text-gray-600 leading-relaxed text-lg">Start by giving your cover letter a descriptive name to keep it organized and easy to find later.</p>
+                </div>
+                <div>
+                  <div className="bg-gray-900 rounded-xl overflow-hidden shadow-lg" style={{ height: '400px' }}>
+                    <video
+                      className="w-full h-full object-cover"
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                    >
+                      <source src="/cover letter 1.mp4" type="video/mp4" />
+                      <div className="w-full h-full bg-gradient-to-br from-blue-800 to-blue-900 flex items-center justify-center">
+                        <p className="text-white">Video not supported</p>
+                      </div>
+                    </video>
+                  </div>
+                </div>
+              </div>
+
+              {/* Step 2 */}
+              <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+                <div className="lg:order-2 space-y-6">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center font-bold text-lg">
+                      2
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900">Select Which Job You're Applying For</h3>
+                  </div>
+                  <p className="text-gray-600 leading-relaxed text-lg">Choose the specific job position you're applying for or add a new job description to tailor your letter.</p>
+                </div>
+                <div className="lg:order-1">
+                  <div className="bg-gray-900 rounded-xl overflow-hidden shadow-lg" style={{ height: '400px' }}>
+                    <video
+                      className="w-full h-full object-cover"
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                    >
+                      <source src="/cover letter 2.mp4" type="video/mp4" />
+                      <div className="w-full h-full bg-gradient-to-br from-purple-800 to-purple-900 flex items-center justify-center">
+                        <p className="text-white">Video not supported</p>
+                      </div>
+                    </video>
+                  </div>
+                </div>
+              </div>
+
+              {/* Step 3 */}
+              <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+                <div className="space-y-6">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center font-bold text-lg">
+                      3
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900">Select Which Resume You Want To Use</h3>
+                  </div>
+                  <p className="text-gray-600 leading-relaxed text-lg">Choose from your saved resumes or upload a new one to match your cover letter with your experience.</p>
+                </div>
+                <div>
+                  <div className="bg-gray-900 rounded-xl overflow-hidden shadow-lg" style={{ height: '400px' }}>
+                    <video
+                      className="w-full h-full object-cover"
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                    >
+                      <source src="/cover letter 3.mp4" type="video/mp4" />
+                      <div className="w-full h-full bg-gradient-to-br from-green-800 to-green-900 flex items-center justify-center">
+                        <p className="text-white">Video not supported</p>
+                      </div>
+                    </video>
+                  </div>
+                </div>
+              </div>
+
+              {/* Step 4 */}
+              <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+                <div className="lg:order-2 space-y-6">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-12 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center font-bold text-lg">
+                      4
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900">Generate Your Cover Letter</h3>
+                  </div>
+                  <p className="text-gray-600 leading-relaxed text-lg">Let our AI create a personalized, professional cover letter tailored to your job and experience.</p>
+                </div>
+                <div className="lg:order-1">
+                  <div className="bg-gray-900 rounded-xl overflow-hidden shadow-lg" style={{ height: '400px' }}>
+                    <video
+                      className="w-full h-full object-cover"
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                    >
+                      <source src="/cover letter 4.mp4" type="video/mp4" />
+                      <div className="w-full h-full bg-gradient-to-br from-orange-800 to-orange-900 flex items-center justify-center">
+                        <p className="text-white">Video not supported</p>
+                      </div>
+                    </video>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Why Choose Our AI Cover Letter Generator Section */}
+      <section className="py-12 sm:py-16 lg:py-20 bg-gray-50">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">Why Choose Our AI Cover Letter Generator?</h2>
+              <p className="text-lg text-gray-600">Powered by advanced AI to give you the competitive edge</p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="text-center space-y-4">
+                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
+                  <Brain className="w-8 h-8 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900">AI-Powered Intelligence</h3>
+                <p className="text-gray-600">
+                  Our advanced AI analyzes job descriptions and tailors your cover letter to match specific requirements
+                  and keywords.
+                </p>
+              </div>
+
+              <div className="text-center space-y-4">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
+                  <Zap className="w-8 h-8 text-green-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900">Lightning Fast</h3>
+                <p className="text-gray-600">
+                  Generate professional cover letters in under 2 minutes. No more spending hours crafting the perfect
+                  letter.
+                </p>
+              </div>
+
+              <div className="text-center space-y-4">
+                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto">
+                  <Shield className="w-8 h-8 text-purple-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900">ATS Optimized</h3>
+                <p className="text-gray-600">
+                  All cover letters are optimized for Applicant Tracking Systems to ensure they pass initial screenings.
+                </p>
               </div>
             </div>
           </div>

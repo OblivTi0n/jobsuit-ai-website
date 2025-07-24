@@ -19,13 +19,13 @@ export default function PrivacyPolicyPage() {
             </div>
 
             <nav className="hidden md:flex items-center space-x-4 lg:space-x-8">
-              <Link href="/resume-builder" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">
+              <Link href="/#resume-builder" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">
                 AI Resume Builder
               </Link>
-              <Link href="/cover-letter" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">
+              <Link href="/#cover-letter" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">
                 AI Cover Letter Generator
               </Link>
-              <Link href="/tailor-resume" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">
+              <Link href="/#tailor-resume" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">
                 Tailor Your Resume
               </Link>
               <Link href="/pricing" className="text-sm lg:text-base text-gray-600 hover:text-gray-900">

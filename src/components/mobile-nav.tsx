@@ -21,21 +21,21 @@ export function MobileNav() {
       <SheetContent side="right" className="w-[250px] sm:w-[300px]">
         <nav className="flex flex-col gap-4 py-6">
           <Link
-            href="/"
+            href="#resume-builder"
             className="text-lg font-medium text-gray-700 hover:text-gray-900"
             onClick={() => setIsOpen(false)}
           >
             AI Resume Builder
           </Link>
           <Link
-            href="/cover-letter"
+            href="#cover-letter"
             className="text-lg font-medium text-gray-600 hover:text-gray-900"
             onClick={() => setIsOpen(false)}
           >
             AI Cover Letter Generator
           </Link>
           <Link
-            href="/tailor-resume"
+            href="#tailor-resume"
             className="text-lg font-medium text-gray-600 hover:text-gray-900"
             onClick={() => setIsOpen(false)}
           >
