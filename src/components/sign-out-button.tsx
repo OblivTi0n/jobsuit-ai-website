@@ -12,8 +12,13 @@ export function SignOutButton() {
   const handleLogout = async () => {
     try {
       setLoading(true)
-      await supabase.auth.signOut()
-      router.push('/login')
+      const { error } = await supabase.auth.signOut()
+      if (error) {
+        console.error("Supabase sign out error:", error)
+        return
+      }
+      // Force a page reload to clear any cached state
+      window.location.href = '/'
     } catch (error) {
       console.error("Error logging out:", error)
     } finally {
