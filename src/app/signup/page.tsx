@@ -92,7 +92,7 @@ export default function SignupPage() {
       }
 
       // Redirect to confirmation page
-      router.push('/auth/confirm?message=' + encodeURIComponent('Check your email to confirm your account'))
+      router.push('/pricing')
     } catch (err: any) {
       console.error('❌ Signup error:', err)
       setError(err.message || "An error occurred during signup")

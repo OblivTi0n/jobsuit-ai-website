@@ -138,7 +138,7 @@ export async function signup(formData: FormData) {
   }
 
   revalidatePath('/', 'layout')
-  redirect('/auth/confirm?message=' + encodeURIComponent('Check your email to confirm your account'))
+  redirect('/pricing')
 }
 
 export async function signOut() {

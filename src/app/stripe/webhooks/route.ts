@@ -86,6 +86,30 @@ export async function POST(request: NextRequest) {
         const priceId = subscription.items.data[0]?.price.id
         const tokenLimits = getTokenLimits(priceId)
 
+        // Handle upgrades: cancel old subscription if this is an upgrade
+        if (event.type === 'customer.subscription.created') {
+          // Check if user already has an active subscription (different from this one)
+          const { data: existingSubscriptions } = await supabase
+            .from('subscriptions')
+            .select('*')
+            .eq('user_id', userId)
+            .eq('status', 'active')
+            .neq('id', subscription.id)
+
+          // Cancel any existing active subscriptions
+          if (existingSubscriptions && existingSubscriptions.length > 0) {
+            for (const existingSub of existingSubscriptions) {
+              try {
+                // Cancel the subscription in Stripe
+                await stripe.subscriptions.cancel(existingSub.id)
+                console.log(`Cancelled old subscription ${existingSub.id} during upgrade`)
+              } catch (error) {
+                console.error(`Error cancelling old subscription ${existingSub.id}:`, error)
+              }
+            }
+          }
+        }
+
         // Update the subscription in Supabase
         const { error } = await supabase
           .from('subscriptions')

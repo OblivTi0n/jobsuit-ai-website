@@ -26,14 +26,10 @@ export function useStripeCheckout({ plan }: UseStripeCheckoutProps) {
         return
       }
 
-      // Check if user already has an active subscription
-      if (hasActiveSubscription) {
-        setError('You already have an active subscription. Please manage your subscription from your account settings.')
-        return
-      }
+      // Note: Upgrade validation is now handled server-side in the checkout session API
 
       // Create checkout session
-      const response = await fetch('/api/stripe/create-checkout-session', {
+      const response = await fetch('/stripe/create-checkout-session', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

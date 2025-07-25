@@ -9,12 +9,33 @@ import { MobileNav } from "@/components/mobile-nav"
 import { UserNav } from "@/components/user-nav"
 import { useAuth } from "@/components/auth-provider"
 import { useStripeCheckout } from "@/hooks/use-stripe-checkout"
+import { STRIPE_PRICE_IDS } from "@/lib/stripe/config"
 
 export default function PricingPage() {
-  const { user, hasActiveSubscription, loading: authLoading } = useAuth()
+  const { user, hasActiveSubscription, subscription, loading: authLoading } = useAuth()
 
   const proCheckout = useStripeCheckout({ plan: 'pro' })
   const eliteCheckout = useStripeCheckout({ plan: 'elite' })
+
+  // Determine user's current plan with specific details
+  const getCurrentPlan = () => {
+    if (!user) return null
+    // If user has an active subscription, determine which specific plan
+    if (hasActiveSubscription && subscription?.price_id) {
+      if (subscription.price_id === STRIPE_PRICE_IDS.pro) {
+        return 'pro'
+      }
+      if (subscription.price_id === STRIPE_PRICE_IDS.elite) {
+        return 'elite'
+      }
+      // Fallback for unknown paid plans
+      return 'paid'
+    }
+    // Otherwise, they're on the free plan
+    return 'free'
+  }
+
+  const currentPlan = getCurrentPlan()
 
   const plans = [
     {
@@ -111,16 +132,38 @@ export default function PricingPage() {
         disabled: false,
         loading: false,
         error: null,
+        text: currentPlan === 'free' ? 'Current Plan' : 'Start Today',
+        isCurrent: currentPlan === 'free',
       }
     }
 
     const checkout = plan.planType === "pro" ? proCheckout : eliteCheckout
     
+    // Determine button text based on user's current plan
+    let buttonText = 'Start Today'
+    let isCurrent = false
+    let disabled = checkout.loading || authLoading
+
+    if (currentPlan === plan.planType) {
+      buttonText = 'Current Plan'
+      isCurrent = true
+      disabled = true
+    } else if (currentPlan === 'free') {
+      buttonText = `Upgrade to ${plan.name}`
+    } else if (currentPlan === 'pro' && plan.planType === 'elite') {
+      buttonText = 'Upgrade to Elite'
+    } else if (currentPlan === 'elite' && plan.planType === 'pro') {
+      buttonText = 'Downgrade to Pro'
+      disabled = true // Prevent downgrades for now
+    }
+    
     return {
       onClick: () => handlePlanClick(plan.planType),
-      disabled: checkout.loading || authLoading,
+      disabled,
       loading: checkout.loading,
       error: checkout.error,
+      text: buttonText,
+      isCurrent,
     }
   }
 
@@ -177,19 +220,39 @@ export default function PricingPage() {
               tools grow with you.
             </p>
 
-            {/* Show subscription status for authenticated users */}
-            {user && hasActiveSubscription && (
-              <div className="mb-8 p-4 bg-green-50 border border-green-200 rounded-lg">
-                <div className="flex items-center justify-center text-green-800">
+            {/* Show plan status for authenticated users */}
+            {user && currentPlan && (
+              <div className={`mb-8 p-4 rounded-lg ${
+                ['pro', 'elite', 'paid'].includes(currentPlan)
+                  ? 'bg-green-50 border border-green-200' 
+                  : 'bg-blue-50 border border-blue-200'
+              }`}>
+                <div className={`flex items-center justify-center ${
+                  ['pro', 'elite', 'paid'].includes(currentPlan) ? 'text-green-800' : 'text-blue-800'
+                }`}>
                   <Check className="w-5 h-5 mr-2" />
-                  <span className="font-medium">You already have an active subscription!</span>
+                  <span className="font-medium">
+                    {currentPlan === 'free' && 'You\'re currently on the Free plan'}
+                    {currentPlan === 'pro' && 'You\'re subscribed to the Pro plan!'}
+                    {currentPlan === 'elite' && 'You\'re subscribed to the Elite plan!'}
+                    {currentPlan === 'paid' && 'You already have an active subscription!'}
+                  </span>
                 </div>
-                <p className="text-sm text-green-600 mt-1">
-                  Manage your subscription from your{" "}
-                  <Link href="/dashboard" className="underline">
-                    account dashboard
-                  </Link>
-                  .
+                <p className={`text-sm mt-1 ${
+                  ['pro', 'elite', 'paid'].includes(currentPlan) ? 'text-green-600' : 'text-blue-600'
+                }`}>
+                  {['pro', 'elite', 'paid'].includes(currentPlan)
+                    ? (
+                      <>
+                        Manage your subscription from your{" "}
+                        <Link href="/dashboard" className="underline">
+                          account dashboard
+                        </Link>
+                        .
+                      </>
+                    ) 
+                    : 'Upgrade anytime to unlock more features and remove usage limits.'
+                  }
                 </p>
               </div>
             )}
@@ -279,7 +342,9 @@ export default function PricingPage() {
                         <div className="mb-8">
                           <Button
                             className={`w-full py-3 text-lg font-semibold ${
-                              plan.planType === "free"
+                              buttonProps.isCurrent
+                                ? "bg-gray-100 text-gray-500 cursor-not-allowed border-2 border-gray-200"
+                                : plan.planType === "free"
                                 ? "border-2 border-gray-300 text-gray-700 hover:bg-gray-50 bg-transparent"
                                 : plan.popular
                                 ? "bg-white text-teal-700 hover:bg-gray-100"
@@ -288,7 +353,7 @@ export default function PricingPage() {
                                 : "bg-blue-600 hover:bg-blue-700 text-white"
                             }`}
                             variant={
-                              plan.planType === "free" || plan.planType === "elite" 
+                              buttonProps.isCurrent || plan.planType === "free" || plan.planType === "elite" 
                                 ? "outline" 
                                 : "default"
                             }
@@ -301,7 +366,7 @@ export default function PricingPage() {
                                 Processing...
                               </div>
                             ) : (
-                              plan.buttonText
+                              buttonProps.text
                             )}
                           </Button>
                         </div>

@@ -37,11 +37,30 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Check if user already has an active subscription
+    // Get user's current subscription to validate upgrade path
     const subscription = await getUserSubscription(user.id)
-    if (hasActiveSubscription(subscription)) {
+    
+    // Determine current plan
+    let currentPlan: 'free' | 'pro' | 'elite' = 'free'
+    if (hasActiveSubscription(subscription) && subscription.price_id) {
+      if (subscription.price_id === STRIPE_PRICE_IDS.pro) {
+        currentPlan = 'pro'
+      } else if (subscription.price_id === STRIPE_PRICE_IDS.elite) {
+        currentPlan = 'elite'
+      }
+    }
+    
+    // Validate upgrade path
+    if (currentPlan === plan) {
       return NextResponse.json(
-        { error: 'User already has an active subscription' },
+        { error: `You are already subscribed to the ${plan.charAt(0).toUpperCase() + plan.slice(1)} plan` },
+        { status: 400 }
+      )
+    }
+    
+    if (currentPlan === 'elite' && plan === 'pro') {
+      return NextResponse.json(
+        { error: 'Cannot downgrade from Elite to Pro plan. Please contact support for assistance.' },
         { status: 400 }
       )
     }
@@ -88,8 +107,8 @@ export async function POST(request: NextRequest) {
         })
     }
 
-    // Create checkout session
-    const session = await stripe.checkout.sessions.create({
+    // Create checkout session - handle both new subscriptions and upgrades
+    let sessionConfig: Stripe.Checkout.SessionCreateParams = {
       customer: customerId,
       mode: 'subscription',
       payment_method_types: ['card'],
@@ -104,6 +123,7 @@ export async function POST(request: NextRequest) {
       metadata: {
         user_id: user.id,
         plan: plan,
+        upgrade_from: currentPlan,
       },
       subscription_data: {
         metadata: {
@@ -111,7 +131,9 @@ export async function POST(request: NextRequest) {
           plan: plan,
         },
       },
-    })
+    }
+
+    const session = await stripe.checkout.sessions.create(sessionConfig)
 
     return NextResponse.json({ sessionId: session.id })
   } catch (error) {
