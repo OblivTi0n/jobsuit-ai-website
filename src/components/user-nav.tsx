@@ -38,15 +38,15 @@ export function UserNav() {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48">
             <DropdownMenuItem asChild>
-              <Link href="/dashboard" className="flex items-center">
+              <Link href="https://editor.jobsuit.ai" className="flex items-center">
                 <User className="mr-2 h-4 w-4" />
-                Dashboard
+                Resume Editor
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href="/settings" className="flex items-center">
+              <Link href="/dashboard" className="flex items-center">
                 <Settings className="mr-2 h-4 w-4" />
-                Settings
+                Billing & Usage
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />

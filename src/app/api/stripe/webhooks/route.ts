@@ -53,6 +53,32 @@ function getPlanName(priceId: string) {
   return null
 }
 
+// Helper function to safely convert Unix timestamp to ISO string with fallback
+function safeTimestampToISO(timestamp: number | null | undefined): string {
+  if (!timestamp || isNaN(timestamp)) {
+    return new Date().toISOString() // Fallback to current time for required fields
+  }
+  try {
+    return new Date(timestamp * 1000).toISOString()
+  } catch (error) {
+    console.error('Error converting timestamp:', timestamp, error)
+    return new Date().toISOString() // Fallback to current time
+  }
+}
+
+// Helper function for nullable timestamp fields
+function safeNullableTimestampToISO(timestamp: number | null | undefined): string | null {
+  if (!timestamp || isNaN(timestamp)) {
+    return null
+  }
+  try {
+    return new Date(timestamp * 1000).toISOString()
+  } catch (error) {
+    console.error('Error converting timestamp:', timestamp, error)
+    return null
+  }
+}
+
 export async function POST(request: NextRequest) {
   const body = await request.text()
   const headersList = await headers()
@@ -85,60 +111,78 @@ export async function POST(request: NextRequest) {
 
         const priceId = subscription.items.data[0]?.price.id
         const tokenLimits = getTokenLimits(priceId)
+        const planName = getPlanName(priceId)
 
-        // Handle upgrades: cancel old subscription if this is an upgrade
-        if (event.type === 'customer.subscription.created') {
-          // Check if user already has an active subscription (different from this one)
-          const { data: existingSubscriptions } = await supabase
-            .from('subscriptions')
-            .select('*')
-            .eq('user_id', userId)
-            .eq('status', 'active')
-            .neq('id', subscription.id)
+        // Check if user has an existing subscription (including free plans)
+        const { data: existingSubscriptions, error: fetchError } = await supabase
+          .from('subscriptions')
+          .select('*')
+          .eq('user_id', userId)
+          .in('status', ['active', 'trialing', 'past_due', 'unpaid'])
+          .order('created', { ascending: false })
 
-          // Cancel any existing active subscriptions
-          if (existingSubscriptions && existingSubscriptions.length > 0) {
-            for (const existingSub of existingSubscriptions) {
+        if (fetchError) {
+          console.error('Error fetching existing subscriptions:', fetchError)
+          break
+        }
+
+        let subscriptionData = {
+          id: subscription.id,
+          user_id: userId,
+          status: subscription.status,
+          price_id: priceId,
+          plan: planName,
+          quantity: subscription.items.data[0]?.quantity,
+          cancel_at_period_end: subscription.cancel_at_period_end,
+          created: new Date(subscription.created * 1000).toISOString(),
+          current_period_start: safeTimestampToISO((subscription as any).current_period_start),
+          current_period_end: safeTimestampToISO((subscription as any).current_period_end),
+          canceled_at: safeNullableTimestampToISO(subscription.canceled_at),
+          analysis_token: tokenLimits.analysis_token,
+          tailoring_token: tokenLimits.tailoring_token,
+          chat_token: tokenLimits.chat_token,
+          customer_id: subscription.customer as string,
+        }
+
+        if (existingSubscriptions && existingSubscriptions.length > 0) {
+          // User has existing subscription(s) - this is an upgrade
+          for (const existingSub of existingSubscriptions) {
+            // Cancel old Stripe subscriptions, but skip local free plans
+            if (existingSub.id !== subscription.id && existingSub.plan !== 'free' && existingSub.id.startsWith('sub_') && !existingSub.id.includes('-')) {
               try {
-                // Cancel the subscription in Stripe
                 await stripe.subscriptions.cancel(existingSub.id)
-                console.log(`Cancelled old subscription ${existingSub.id} during upgrade`)
+                console.log(`Cancelled old Stripe subscription ${existingSub.id} during upgrade`)
               } catch (error) {
                 console.error(`Error cancelling old subscription ${existingSub.id}:`, error)
               }
             }
+            
+            // Update the existing subscription record instead of creating a new one
+            if (existingSub.plan === 'free' || existingSub.id === subscription.id) {
+              const { error: updateError } = await supabase
+                .from('subscriptions')
+                .update(subscriptionData)
+                .eq('id', existingSub.id)
+
+              if (updateError) {
+                console.error('Error updating existing subscription:', updateError)
+              } else {
+                console.log(`Updated existing subscription ${existingSub.id} to ${planName} plan`)
+              }
+              break // Only update the first matching subscription
+            }
           }
-        }
-
-        // Update the subscription in Supabase
-        const { error } = await supabase
-          .from('subscriptions')
-          .upsert({
-            id: subscription.id,
-            user_id: userId,
-            status: subscription.status,
-            price_id: priceId,
-            plan: getPlanName(priceId),
-            quantity: subscription.items.data[0]?.quantity,
-            cancel_at_period_end: subscription.cancel_at_period_end,
-            created: new Date(subscription.created * 1000).toISOString(),
-            current_period_start: new Date((subscription as any).current_period_start * 1000).toISOString(),
-            current_period_end: new Date((subscription as any).current_period_end * 1000).toISOString(),
-            ended_at: subscription.ended_at ? new Date(subscription.ended_at * 1000).toISOString() : null,
-            cancel_at: subscription.cancel_at ? new Date(subscription.cancel_at * 1000).toISOString() : null,
-            canceled_at: subscription.canceled_at ? new Date(subscription.canceled_at * 1000).toISOString() : null,
-            trial_start: subscription.trial_start ? new Date(subscription.trial_start * 1000).toISOString() : null,
-            trial_end: subscription.trial_end ? new Date(subscription.trial_end * 1000).toISOString() : null,
-            // Set token limits based on plan
-            analysis_token: tokenLimits.analysis_token,
-            tailoring_token: tokenLimits.tailoring_token,
-            chat_token: tokenLimits.chat_token,
-          })
-
-        if (error) {
-          console.error('Error updating subscription:', error)
         } else {
-          console.log(`Subscription ${subscription.id} updated successfully`)
+          // No existing subscription - create new one
+          const { error } = await supabase
+            .from('subscriptions')
+            .insert(subscriptionData)
+
+          if (error) {
+            console.error('Error creating new subscription:', error)
+          } else {
+            console.log(`Created new subscription ${subscription.id}`)
+          }
         }
         break
       }
@@ -151,7 +195,7 @@ export async function POST(request: NextRequest) {
           .from('subscriptions')
           .update({
             status: 'canceled',
-            ended_at: new Date().toISOString(),
+            canceled_at: new Date().toISOString(),
             // Reset tokens to 0 when subscription is canceled
             analysis_token: 0,
             tailoring_token: 0,
@@ -180,22 +224,21 @@ export async function POST(request: NextRequest) {
             break
           }
           
-          // Now you have both subscription ID and user ID for full context
           const priceId = subscription.items.data[0]?.price.id
           const tokenLimits = getTokenLimits(priceId)
           
-                     // Reset tokens for the new billing period
-           const { error } = await supabase
-             .from('subscriptions')
-             .update({
-               status: 'active',
-               analysis_token: tokenLimits.analysis_token,
-               tailoring_token: tokenLimits.tailoring_token,
-               chat_token: tokenLimits.chat_token,
-               current_period_start: new Date((subscription as any).current_period_start * 1000).toISOString(),
-               current_period_end: new Date((subscription as any).current_period_end * 1000).toISOString(),
-             })
-             .eq('id', (invoice as any).subscription) // Using subscription ID as the key
+          // Reset tokens for the new billing period
+          const { error } = await supabase
+            .from('subscriptions')
+            .update({
+              status: 'active',
+              analysis_token: tokenLimits.analysis_token,
+              tailoring_token: tokenLimits.tailoring_token,
+              chat_token: tokenLimits.chat_token,
+              current_period_start: safeTimestampToISO((subscription as any).current_period_start),
+              current_period_end: safeTimestampToISO((subscription as any).current_period_end),
+            })
+            .eq('id', (invoice as any).subscription)
 
           if (error) {
             console.error('Error resetting tokens on recurring payment:', error)
