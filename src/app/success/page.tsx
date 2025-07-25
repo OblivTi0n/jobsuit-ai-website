@@ -11,24 +11,15 @@ export default function SuccessPage() {
   const searchParams = useSearchParams()
   const sessionId = searchParams.get('session_id')
   const [redirecting, setRedirecting] = useState(false)
-  const [countdown, setCountdown] = useState(5)
-
   useEffect(() => {
-    // Start countdown
-    const countdownInterval = setInterval(() => {
-      setCountdown((prev) => {
-        if (prev <= 1) {
-          clearInterval(countdownInterval)
-          setRedirecting(true)
-          // Redirect to editor.jobsuit.ai
-          window.location.href = 'https://editor.jobsuit.ai'
-          return 0
-        }
-        return prev - 1
-      })
-    }, 1000)
+    // Auto-redirect after 2.5 seconds
+    const redirectTimeout = setTimeout(() => {
+      setRedirecting(true)
+      // Redirect to editor.jobsuit.ai
+      window.location.href = 'https://editor.jobsuit.ai'
+    }, 2500)
 
-    return () => clearInterval(countdownInterval)
+    return () => clearTimeout(redirectTimeout)
   }, [])
 
   const handleRedirectNow = () => {
@@ -84,7 +75,7 @@ export default function SuccessPage() {
                 {!redirecting ? (
                   <div className="space-y-4">
                     <p className="text-gray-600">
-                      Redirecting to Jobsuit Editor in <span className="font-bold text-blue-600">{countdown}</span> seconds...
+                      Redirecting to Jobsuit Editor...
                     </p>
                     
                     <Button 
