@@ -59,8 +59,8 @@ export default function LoginPage() {
 
       console.log('✅ Login successful:', data)
       
-      // Redirect to dashboard
-      router.push('/dashboard')
+      // Redirect to home page
+      router.push('/')
     } catch (err: any) {
       console.error('❌ Login error:', err)
       setError(err.message || "An error occurred during login")
