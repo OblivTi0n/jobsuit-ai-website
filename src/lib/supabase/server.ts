@@ -22,8 +22,15 @@ export async function createClient() {
             // This can be ignored if you have middleware refreshing
             // user sessions.
           }
-        }
-      }
+        },
+      },
+      cookieOptions: {
+        domain: '.jobsuit.ai',
+        path: '/',
+        secure: process.env.NODE_ENV === 'production',
+        httpOnly: true,
+        sameSite: 'lax',
+      },
     }
   )
 } 

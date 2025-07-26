@@ -15,13 +15,22 @@ export async function updateSession(request: NextRequest) {
           return request.cookies.getAll()
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value))
+          cookiesToSet.forEach(({ name, value, options }) => {
+            // Set cookies for cross-subdomain sharing
+            const crossDomainOptions = {
+              ...options,
+              domain: '.jobsuit.ai',
+              path: '/',
+              secure: process.env.NODE_ENV === 'production',
+              httpOnly: true,
+              sameSite: 'lax' as const
+            }
+            request.cookies.set(name, value)
+            supabaseResponse.cookies.set(name, value, crossDomainOptions)
+          })
           supabaseResponse = NextResponse.next({
             request,
           })
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          )
         },
       },
     }
