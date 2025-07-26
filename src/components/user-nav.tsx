@@ -1,10 +1,9 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { useAuth } from "@/components/auth-provider"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { supabase } from "@/lib/supabase/client"
+import { createClient, supabase } from "@/lib/supabase/client"
 import { User, LogOut, Settings } from "lucide-react"
 import { 
   DropdownMenu,
@@ -13,14 +12,41 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger 
 } from "@/components/ui/dropdown-menu"
+import { useState, useEffect } from "react"
 
 export function UserNav() {
-  const { user, loading } = useAuth()
+  const [user, setUser] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
   const router = useRouter()
+
+  useEffect(() => {
+    
+    // Get initial user
+    const getInitialUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      setUser(user)
+      setLoading(false)
+    }
+
+    getInitialUser()
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        setUser(session?.user ?? null)
+        setLoading(false)
+      }
+    )
+
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [])
 
   const handleLogout = async () => {
     console.log("🔐 [UserNav] Starting logout process...");
     try {
+      const supabase = createClient()
       console.log("🔐 [UserNav] Calling supabase.auth.signOut()");
       const { error } = await supabase.auth.signOut();
       

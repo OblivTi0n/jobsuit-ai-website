@@ -1,23 +1,46 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { Menu, ChevronDown } from "lucide-react"
 import Link from "next/link"
-import { useAuth } from "@/components/auth-provider"
-import { supabase } from "@/lib/supabase/client"
+import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
 
 export function MobileNav() {
   const [isOpen, setIsOpen] = useState(false)
   const [isMoreOpen, setIsMoreOpen] = useState(false)
-  const { user, signOut } = useAuth()
+  const [user, setUser] = useState<any>(null)
   const router = useRouter()
+
+  useEffect(() => {
+    const supabase = createClient()
+    
+    // Get initial user
+    const getInitialUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      setUser(user)
+    }
+
+    getInitialUser()
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        setUser(session?.user ?? null)
+      }
+    )
+
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [])
 
   const handleLogout = async () => {
     console.log("🔐 [MobileNav] Starting logout process...");
     try {
+      const supabase = createClient()
       console.log("🔐 [MobileNav] Calling supabase.auth.signOut()");
       const { error } = await supabase.auth.signOut();
       

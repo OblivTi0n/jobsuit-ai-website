@@ -1,18 +1,70 @@
 "use client"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
 
-import { Sparkles, Check, Star, Users, Crown, Zap, AlertCircle } from "lucide-react"
-import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Check, Sparkles, Zap, Crown, ArrowRight, Star, Users, AlertCircle } from "lucide-react"
 import Link from "next/link"
-import { MobileNav } from "@/components/mobile-nav"
-import { UserNav } from "@/components/user-nav"
-import { useAuth } from "@/components/auth-provider"
+import { useState, useEffect } from "react"
+import { createClient } from "@/lib/supabase/client"
+import type { User as SupabaseUser } from '@supabase/supabase-js'
+import { getUserSubscriptionClient, hasActiveSubscription } from "@/lib/stripe/subscription-utils-client"
 import { useStripeCheckout } from "@/hooks/use-stripe-checkout"
 import { STRIPE_PRICE_IDS } from "@/lib/stripe/config"
+import { MobileNav } from "@/components/mobile-nav"
+import { UserNav } from "@/components/user-nav"
 
 export default function PricingPage() {
-  const { user, hasActiveSubscription, subscription, loading: authLoading } = useAuth()
+  const [user, setUser] = useState<SupabaseUser | null>(null)
+  const [subscription, setSubscription] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const supabase = createClient()
+    
+    // Get initial session
+    const getInitialSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
+      setUser(session?.user ?? null)
+      
+      if (session?.user) {
+        try {
+          const sub = await getUserSubscriptionClient(session.user.id)
+          setSubscription(sub)
+        } catch (error) {
+          console.error('Error fetching subscription:', error)
+        }
+      }
+      
+      setLoading(false)
+    }
+
+    getInitialSession()
+
+    // Listen for auth changes
+    const { data: { subscription: authSubscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        setUser(session?.user ?? null)
+        
+        if (session?.user) {
+          try {
+            const sub = await getUserSubscriptionClient(session.user.id)
+            setSubscription(sub)
+          } catch (error) {
+            console.error('Error fetching subscription:', error)
+          }
+        } else {
+          setSubscription(null)
+        }
+        
+        setLoading(false)
+      }
+    )
+
+    return () => {
+      authSubscription.unsubscribe()
+    }
+  }, [])
 
   const proCheckout = useStripeCheckout({ plan: 'pro' })
   const eliteCheckout = useStripeCheckout({ plan: 'elite' })
@@ -21,7 +73,7 @@ export default function PricingPage() {
   const getCurrentPlan = () => {
     if (!user) return null
     // If user has an active subscription, determine which specific plan
-    if (hasActiveSubscription && subscription?.price_id) {
+    if (subscription && hasActiveSubscription(subscription) && subscription?.price_id) {
       if (subscription.price_id === STRIPE_PRICE_IDS.pro) {
         return 'pro'
       }
@@ -142,7 +194,7 @@ export default function PricingPage() {
     // Determine button text based on user's current plan
     let buttonText = 'Start Today'
     let isCurrent = false
-    let disabled = checkout.loading || authLoading
+    let disabled = checkout.loading || loading // Assuming loading is a global state or prop
 
     if (currentPlan === plan.planType) {
       buttonText = 'Current Plan'

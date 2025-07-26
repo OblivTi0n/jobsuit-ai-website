@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/supabase/client'
+import { createClient } from '@/lib/supabase/client'
 
 export interface UserSubscription {
   id: string | null
@@ -9,6 +9,7 @@ export interface UserSubscription {
 }
 
 export async function getUserSubscriptionClient(userId: string): Promise<UserSubscription> {
+  const supabase = createClient()
   const { data: subscription, error } = await supabase
     .from('subscriptions')
     .select('*')
@@ -48,6 +49,7 @@ export async function getSubscriptionPlan(priceId: string | null): Promise<'free
   if (!priceId) return 'free'
   
   // Get the product that matches this price_id
+  const supabase = createClient()
   const { data: product, error } = await supabase
     .from('products')
     .select('metadata')

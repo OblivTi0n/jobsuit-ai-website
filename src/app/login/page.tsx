@@ -54,7 +54,14 @@ export default function LoginPage() {
       })
 
       if (error) {
-        throw error
+        // Handle rate limiting specifically
+        if (error.message.includes('rate limit') || error.message.includes('too many requests')) {
+          setError("Too many login attempts. Please wait a few minutes before trying again.")
+        } else {
+          setError(error.message)
+        }
+        setIsSubmitting(false)
+        return
       }
 
       console.log('✅ Login successful:', data)
@@ -63,7 +70,13 @@ export default function LoginPage() {
       router.push('/')
     } catch (err: any) {
       console.error('❌ Login error:', err)
-      setError(err.message || "An error occurred during login")
+      
+      // Handle rate limiting in catch block too
+      if (err.message?.includes('rate limit') || err.message?.includes('too many requests')) {
+        setError("Too many login attempts. Please wait a few minutes before trying again.")
+      } else {
+        setError(err.message || "An error occurred during login")
+      }
       setIsSubmitting(false)
     }
   }

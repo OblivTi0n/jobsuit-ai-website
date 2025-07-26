@@ -79,7 +79,14 @@ export default function SignupPage() {
       })
 
       if (error) {
-        throw error
+        // Handle rate limiting specifically
+        if (error.message.includes('rate limit') || error.message.includes('too many requests')) {
+          setError("Too many signup attempts. Please wait a few minutes before trying again.")
+        } else {
+          setError(error.message)
+        }
+        setIsSubmitting(false)
+        return
       }
 
       console.log('✅ Signup successful:', data)
@@ -95,7 +102,13 @@ export default function SignupPage() {
       router.push('/pricing')
     } catch (err: any) {
       console.error('❌ Signup error:', err)
-      setError(err.message || "An error occurred during signup")
+      
+      // Handle rate limiting in catch block too
+      if (err.message?.includes('rate limit') || err.message?.includes('too many requests')) {
+        setError("Too many signup attempts. Please wait a few minutes before trying again.")
+      } else {
+        setError(err.message || "An error occurred during signup")
+      }
       setIsSubmitting(false)
     }
   }

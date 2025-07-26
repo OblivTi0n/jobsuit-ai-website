@@ -1,9 +1,10 @@
 "use client"
 
-import { useState } from 'react'
-import { getStripe } from '@/lib/stripe/config'
-import { useAuth } from '@/components/auth-provider'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { getStripe } from '@/lib/stripe/config'
+import { createClient } from '@/lib/supabase/client'
+import type { User as SupabaseUser } from '@supabase/supabase-js'
 
 interface UseStripeCheckoutProps {
   plan: 'pro' | 'elite'
@@ -12,8 +13,32 @@ interface UseStripeCheckoutProps {
 export function useStripeCheckout({ plan }: UseStripeCheckoutProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const { user, hasActiveSubscription } = useAuth()
+  const [user, setUser] = useState<SupabaseUser | null>(null)
+  const [hasActiveSubscription, setHasActiveSubscription] = useState(false)
   const router = useRouter()
+
+  useEffect(() => {
+    const supabase = createClient()
+    
+    // Get initial session
+    const getInitialSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
+      setUser(session?.user ?? null)
+    }
+
+    getInitialSession()
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        setUser(session?.user ?? null)
+      }
+    )
+
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [])
 
   const startCheckout = async () => {
     try {

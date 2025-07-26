@@ -14,23 +14,25 @@ export async function createClient() {
         },
         setAll(cookiesToSet) {
           try {
-            cookiesToSet.forEach(({ name, value, options }) =>
-              cookieStore.set(name, value, options)
-            )
+            cookiesToSet.forEach(({ name, value, options }) => {
+              // Configure cookies for cross-subdomain sharing
+              const crossDomainOptions = {
+                ...options,
+                domain: '.jobsuit.ai', // Share across jobsuit.ai and editor.jobsuit.ai
+                path: '/',
+                secure: process.env.NODE_ENV === 'production', // HTTPS required in production
+                httpOnly: true, // Prevent XSS attacks
+                sameSite: 'lax' as const // CSRF protection while allowing cross-subdomain
+              }
+              cookieStore.set(name, value, crossDomainOptions)
+            })
           } catch {
             // The `setAll` method was called from a Server Component.
             // This can be ignored if you have middleware refreshing
             // user sessions.
           }
-        },
-      },
-      cookieOptions: {
-        domain: '.jobsuit.ai',
-        path: '/',
-        secure: process.env.NODE_ENV === 'production',
-        httpOnly: true,
-        sameSite: 'lax',
-      },
+        }
+      }
     }
   )
 } 

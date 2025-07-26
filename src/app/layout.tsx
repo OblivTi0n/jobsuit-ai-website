@@ -1,37 +1,13 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { AuthProvider } from "@/components/auth-provider";
+import type { Metadata } from "next"
+import { Inter } from "next/font/google"
+import "./globals.css"
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Jobsuit – Free AI Resume Builder | Tailor Your Resume with AI",
-  description: "Create, analyze, and tailor unlimited resumes for free with AI. Optimize for ATS, match keywords, and get real-time help from Jobsuit AI assistant to land interviews.",
-  keywords: [
-    "AI resume builder",
-    "ATS friendly resume",
-    "cover letter generator",
-    "resume optimization",
-    "job application",
-    "career tools",
-    "resume writing",
-    "AI cover letter",
-    "resume keywords",
-    "job search",
-    "resume template",
-    "professional resume",
-    "resume analysis",
-    "resume tailoring"
-  ],
+  title: "JobSuit AI - AI-Powered Resume Builder",
+  description: "Build, analyze, and tailor your resume with AI. Get personalized feedback and ATS-optimized suggestions to beat the hiring system.",
+  keywords: "resume builder, AI resume, ATS optimization, job application, career tools",
   authors: [{ name: "JobSuit AI" }],
   creator: "JobSuit AI",
   publisher: "JobSuit AI",
@@ -45,16 +21,16 @@ export const metadata: Metadata = {
     canonical: '/',
   },
   openGraph: {
-    title: "Jobsuit – Free AI Resume Builder | Tailor Your Resume with AI",
-    description: "Create, analyze, and tailor unlimited resumes for free with AI. Optimize for ATS, match keywords, and get real-time help from Jobsuit AI assistant to land interviews.",
+    title: "JobSuit AI - AI-Powered Resume Builder",
+    description: "Build, analyze, and tailor your resume with AI. Get personalized feedback and ATS-optimized suggestions to beat the hiring system.",
     url: 'https://jobsuit.ai',
     siteName: 'JobSuit AI',
     images: [
       {
-        url: '/Logo Jobsuit name.png',
+        url: '/hey-jobsuit.png',
         width: 1200,
         height: 630,
-        alt: 'JobSuit AI - AI Resume Builder',
+        alt: 'JobSuit AI - AI-Powered Resume Builder',
       },
     ],
     locale: 'en_US',
@@ -62,9 +38,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: "Jobsuit – Free AI Resume Builder | Tailor Your Resume with AI",
-    description: "Create, analyze, and tailor unlimited resumes for free with AI. Optimize for ATS, match keywords, and get real-time help from Jobsuit AI assistant to land interviews.",
-    images: ['/Logo Jobsuit name.png'],
+    title: "JobSuit AI - AI-Powered Resume Builder",
+    description: "Build, analyze, and tailor your resume with AI. Get personalized feedback and ATS-optimized suggestions to beat the hiring system.",
+    images: ['/hey-jobsuit.png'],
   },
   robots: {
     index: true,
@@ -78,29 +54,20 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: 'your-google-verification-code', // Add your Google Search Console verification code
+    google: 'your-google-verification-code',
   },
-};
+}
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: {
+  children: React.ReactNode
+}) {
   return (
     <html lang="en">
-      <head>
-        <link rel="icon" href="/logo_4k (1).png" />
-        <link rel="apple-touch-icon" href="/logo_4k (1).png" />
-        <meta name="theme-color" content="#2563eb" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <AuthProvider>
-          {children}
-        </AuthProvider>      </body>
+      <body className={inter.className}>
+        {children}
+      </body>
     </html>
-  );
+  )
 }
