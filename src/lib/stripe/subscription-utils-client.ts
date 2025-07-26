@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/client'
+import { supabase } from '@/lib/supabase/client'
 
 export interface UserSubscription {
   id: string | null
@@ -9,12 +9,11 @@ export interface UserSubscription {
 }
 
 export async function getUserSubscriptionClient(userId: string): Promise<UserSubscription> {
-  const supabase = createClient()
-  
   const { data: subscription, error } = await supabase
     .from('subscriptions')
     .select('*')
     .eq('user_id', userId)
+    .in('status', ['active'])
     .maybeSingle()
 
   if (error) {
@@ -47,8 +46,6 @@ export function isSubscriptionCanceled(subscription: UserSubscription): boolean 
 
 export async function getSubscriptionPlan(priceId: string | null): Promise<'free' | 'pro' | 'elite' | 'unknown'> {
   if (!priceId) return 'free'
-  
-  const supabase = createClient()
   
   // Get the product that matches this price_id
   const { data: product, error } = await supabase

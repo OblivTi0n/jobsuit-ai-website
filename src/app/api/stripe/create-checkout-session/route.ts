@@ -37,10 +37,19 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Get user's current subscription to validate upgrade path
+    // Enhanced subscription validation to prevent duplicate purchases
     const subscription = await getUserSubscription(user.id)
     
-    // Determine current plan
+    // Check for any active subscriptions first
+    if (hasActiveSubscription(subscription)) {
+      console.log(`User ${user.id} has active subscription:`, {
+        priceId: subscription.price_id,
+        status: subscription.status,
+        requestedPlan: plan
+      })
+    }
+    
+    // Determine current plan with additional validation
     let currentPlan: 'free' | 'pro' | 'elite' = 'free'
     if (hasActiveSubscription(subscription) && subscription.price_id) {
       if (subscription.price_id === STRIPE_PRICE_IDS.pro) {
@@ -50,19 +59,52 @@ export async function POST(request: NextRequest) {
       }
     }
     
-    // Validate upgrade path
+    // Enhanced validation: Prevent purchasing the same plan
     if (currentPlan === plan) {
+      console.warn(`User ${user.id} attempted to purchase existing plan: ${plan}`)
       return NextResponse.json(
-        { error: `You are already subscribed to the ${plan.charAt(0).toUpperCase() + plan.slice(1)} plan` },
+        { 
+          error: `You are already subscribed to the ${plan.charAt(0).toUpperCase() + plan.slice(1)} plan. Please manage your subscription from your account dashboard instead.`,
+          currentPlan: currentPlan
+        },
         { status: 400 }
       )
     }
     
+    // Prevent downgrades from Elite to Pro
     if (currentPlan === 'elite' && plan === 'pro') {
+      console.warn(`User ${user.id} attempted to downgrade from Elite to Pro`)
       return NextResponse.json(
-        { error: 'Cannot downgrade from Elite to Pro plan. Please contact support for assistance.' },
+        { 
+          error: 'Cannot downgrade from Elite to Pro plan. Please contact support for assistance.',
+          currentPlan: currentPlan
+        },
         { status: 400 }
       )
+    }
+    
+    // Additional validation: Double-check by querying active subscriptions directly
+    const { data: activeSubscriptions } = await supabase
+      .from('subscriptions')
+      .select('price_id, status')
+      .eq('user_id', user.id)
+      .in('status', ['active', 'trialing'])
+    
+    if (activeSubscriptions && activeSubscriptions.length > 0) {
+      const hasRequestedPlan = activeSubscriptions.some(sub => 
+        sub.price_id === STRIPE_PRICE_IDS[plan as keyof typeof STRIPE_PRICE_IDS]
+      )
+      
+      if (hasRequestedPlan) {
+        console.warn(`User ${user.id} has active subscription for requested plan ${plan}`)
+        return NextResponse.json(
+          { 
+            error: `You already have an active ${plan.charAt(0).toUpperCase() + plan.slice(1)} subscription. Please check your account dashboard.`,
+            currentPlan: currentPlan
+          },
+          { status: 400 }
+        )
+      }
     }
 
     // Get the price ID for monthly billing

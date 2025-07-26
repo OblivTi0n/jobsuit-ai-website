@@ -1,7 +1,7 @@
 "use client"
 
 import { createContext, useContext, useEffect, useState } from 'react'
-import { createClient } from '@/lib/supabase/client'
+import { supabase } from '@/lib/supabase/client'
 import type { User } from '@supabase/supabase-js'
 import { getUserSubscriptionClient, hasActiveSubscription, type UserSubscription } from '@/lib/stripe/subscription-utils-client'
 
@@ -22,7 +22,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true)
   const [subscription, setSubscription] = useState<UserSubscription | null>(null)
   const [subscriptionLoading, setSubscriptionLoading] = useState(false)
-  const supabase = createClient()
 
   const fetchSubscription = async (userId: string) => {
     setSubscriptionLoading(true)

@@ -6,11 +6,34 @@ import { Button } from "@/components/ui/button"
 import { Menu, ChevronDown } from "lucide-react"
 import Link from "next/link"
 import { useAuth } from "@/components/auth-provider"
+import { supabase } from "@/lib/supabase/client"
+import { useRouter } from "next/navigation"
 
 export function MobileNav() {
   const [isOpen, setIsOpen] = useState(false)
   const [isMoreOpen, setIsMoreOpen] = useState(false)
   const { user, signOut } = useAuth()
+  const router = useRouter()
+
+  const handleLogout = async () => {
+    console.log("🔐 [MobileNav] Starting logout process...");
+    try {
+      console.log("🔐 [MobileNav] Calling supabase.auth.signOut()");
+      const { error } = await supabase.auth.signOut();
+      
+      if (error) {
+        console.error("🔐 [MobileNav] Supabase signOut error:", error);
+        throw error;
+      }
+      
+      console.log("🔐 [MobileNav] Successfully signed out from Supabase");
+      console.log("🔐 [MobileNav] Redirecting to home page...");
+      router.push('/');
+      console.log("🔐 [MobileNav] Logout process completed");
+    } catch (error) {
+      console.error("🔐 [MobileNav] Error during logout:", error);
+    }
+  };
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -93,7 +116,7 @@ export function MobileNav() {
                 </Link>
                 <Button 
                   onClick={() => {
-                    signOut()
+                    handleLogout()
                     setIsOpen(false)
                   }}
                   variant="outline" 

@@ -3,6 +3,8 @@
 import { Button } from "@/components/ui/button"
 import { useAuth } from "@/components/auth-provider"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { supabase } from "@/lib/supabase/client"
 import { User, LogOut, Settings } from "lucide-react"
 import { 
   DropdownMenu,
@@ -13,7 +15,30 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 export function UserNav() {
-  const { user, loading, signOut } = useAuth()
+  const { user, loading } = useAuth()
+  const router = useRouter()
+
+  const handleLogout = async () => {
+    console.log("🔐 [UserNav] Starting logout process...");
+    try {
+      console.log("🔐 [UserNav] Calling supabase.auth.signOut()");
+      const { error } = await supabase.auth.signOut();
+      
+      if (error) {
+        console.error("🔐 [UserNav] Supabase signOut error:", error);
+        throw error;
+      }
+      
+      console.log("🔐 [UserNav] Successfully signed out from Supabase");
+      console.log("🔐 [UserNav] Removing userEmail from localStorage");
+      localStorage.removeItem('userEmail');
+      console.log("🔐 [UserNav] Redirecting to login page...");
+      router.push('/login');
+      console.log("🔐 [UserNav] Logout process completed");
+    } catch (error) {
+      console.error("🔐 [UserNav] Error during logout:", error);
+    }
+  };
 
   if (loading) {
     return (
@@ -50,7 +75,7 @@ export function UserNav() {
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={signOut} className="text-red-600">
+            <DropdownMenuItem onClick={handleLogout} className="text-red-600">
               <LogOut className="mr-2 h-4 w-4" />
               Sign out
             </DropdownMenuItem>
