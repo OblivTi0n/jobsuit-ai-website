@@ -21,7 +21,6 @@ export async function createClient() {
                 domain: '.jobsuit.ai', // Share across jobsuit.ai and editor.jobsuit.ai
                 path: '/',
                 secure: process.env.NODE_ENV === 'production', // HTTPS required in production
-                httpOnly: true, // Prevent XSS attacks
                 sameSite: 'lax' as const // CSRF protection while allowing cross-subdomain
               }
               cookieStore.set(name, value, crossDomainOptions)
