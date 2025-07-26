@@ -1,16 +1,17 @@
 "use client"
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { CheckCircle, ExternalLink, Loader2 } from "lucide-react"
 import Link from "next/link"
 
-export default function SuccessPage() {
+function SuccessContent() {
   const searchParams = useSearchParams()
   const sessionId = searchParams.get('session_id')
   const [redirecting, setRedirecting] = useState(false)
+  
   useEffect(() => {
     // Auto-redirect after 2.5 seconds
     const redirectTimeout = setTimeout(() => {
@@ -123,5 +124,38 @@ export default function SuccessPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+function LoadingFallback() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-green-50">
+      {/* Header */}
+      <header className="border-b border-gray-100 bg-white/80 backdrop-blur-sm">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex items-center justify-center">
+            <Link href="/" className="flex items-center">
+              <img src="/Logo Jobsuit name.png" alt="JOBSUIT" className="h-8 w-auto" />
+            </Link>
+          </div>
+        </div>
+      </header>
+
+      {/* Loading Content */}
+      <div className="flex items-center justify-center min-h-[calc(100vh-80px)] px-4 py-12">
+        <div className="flex items-center justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-blue-600 mr-3" />
+          <span className="text-gray-600 text-lg">Loading...</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default function SuccessPage() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <SuccessContent />
+    </Suspense>
   )
 } 
